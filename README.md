@@ -18,23 +18,26 @@ Se `flutter` não estiver no PATH, use o caminho completo do SDK:
 & "C:\caminho\para\flutter\bin\flutter.bat" run -d chrome
 ```
 
-Para trocar a chave padrão, use `--dart-define=GEMINI_API_KEY=SUA_CHAVE`. A
-chave incluída no aplicativo fica visível em aplicações Flutter Web; para
-produção, mova a chamada do Gemini para um backend.
+No modo web, a chamada passa pela Netlify Function e a chave não fica no
+navegador. Em plataformas nativas, configure `--dart-define=GEMINI_API_KEY=SUA_CHAVE`.
 
 ## Publicar no Netlify
 
-1. Gere o build de produção:
+1. Envie as alterações para o GitHub:
 
 ```powershell
-flutter build web --release --no-pub
+git add .
+git commit -m "Protege chamada Gemini com Netlify Function"
+git push
 ```
 
-2. Acesse https://app.netlify.com/drop.
-3. Arraste a pasta `build/web` para a área indicada.
-4. Aguarde o upload terminar e abra o endereço gerado.
+2. No Netlify, escolha **Add new site > Import an existing project**.
+3. Selecione o repositório do GitHub.
+4. Deixe o publish directory como `build/web`.
+5. Em **Site configuration > Environment variables**, crie `GEMINI_API_KEY`
+	com sua chave válida do Google AI Studio.
+6. Faça o deploy e abra o endereço gerado.
 
-O arquivo `netlify.toml` já configura o fallback necessário para as rotas do
-Flutter Web. Antes de publicar, lembre que a chave Gemini usada no frontend
-fica visível para qualquer visitante; para uma aplicação pública, use um
-backend ou uma Netlify Function para esconder a chave.
+O arquivo `netlify.toml` já configura o fallback das rotas e o diretório da
+Netlify Function. O upload manual de `build/web` não inclui Functions; use o
+deploy conectado ao GitHub.

@@ -1,14 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/analysis.dart';
 
 class HuggingFaceService {
-  // Default key keeps local runs simple; dart-define can override it.
-  static const String _defaultApiKey =
-      'AQ.Ab8RN6JaFbTTX5T90Y0oN-quwAIZGI-izkLJ3AySvJSK3Xq2fA';
   static const String _apiKey = String.fromEnvironment(
     'GEMINI_API_KEY',
-    defaultValue: _defaultApiKey,
   );
 
   // Gemini API endpoint.
@@ -55,62 +52,35 @@ class HuggingFaceService {
   }
 
   Future<String> _generateText(String prompt) async {
-    if (_apiKey.isEmpty) {
+    final uri = kIsWeb
+        ? Uri.parse('/.netlify/functions/analyze')
+        : Uri.parse('$_baseUrl?key=$_apiKey');
+    final body = kIsWeb
+        ? jsonEncode({'prompt': prompt})
+        : jsonEncode({
+            'contents': [
+              {
+                'parts': [
+                  {'text': prompt}
+                ]
+              }
+            ],
+            'generationConfig': {
+              'temperature': 0.3,
+              'maxOutputTokens': 4096,
+              'responseMimeType': 'application/json',
+            },
+          });
+
+    if (!kIsWeb && _apiKey.isEmpty) {
       throw Exception(
           'Chave Gemini ausente. Execute com --dart-define=GEMINI_API_KEY=SUA_CHAVE.');
     }
 
     final response = await http.post(
-      Uri.parse('$_baseUrl?key=$_apiKey'),
+      uri,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'contents': [
-          {
-            'parts': [
-              {'text': prompt}
-            ]
-          }
-        ],
-        'generationConfig': {
-          'temperature': 0.3,
-          'maxOutputTokens': 4096,
-          'responseMimeType': 'application/json',
-          'responseSchema': {
-            'type': 'OBJECT',
-            'properties': {
-              'literal': {'type': 'STRING'},
-              'subtexto': {'type': 'STRING'},
-              'temperatura': {'type': 'STRING'},
-              'sinais': {
-                'type': 'ARRAY',
-                'items': {'type': 'STRING'}
-              },
-              'leitura_ansiosa': {'type': 'STRING'},
-              'leitura_neutra': {'type': 'STRING'},
-              'respostas_sugeridas': {
-                'type': 'ARRAY',
-                'items': {
-                  'type': 'OBJECT',
-                  'properties': {
-                    'tom': {'type': 'STRING'},
-                    'texto': {'type': 'STRING'},
-                  },
-                  'required': ['tom', 'texto'],
-                },
-              },
-            },
-            'required': [
-              'literal',
-              'subtexto',
-              'temperatura',
-              'sinais',
-              'leitura_ansiosa',
-              'leitura_neutra',
-              'respostas_sugeridas',
-            ],
-          },
-        },
-      }),
+      body: body,
     );
 
     if (response.statusCode != 200) {
@@ -124,6 +94,13 @@ class HuggingFaceService {
     }
 
     final data = jsonDecode(response.body) as Map<String, dynamic>;
+    if (kIsWeb) {
+      final text = data['text'];
+      if (text is String && text.isNotEmpty) return text;
+      throw Exception(
+          data['error'] ?? 'A função do Netlify não retornou texto.');
+    }
+
     final candidates = data['candidates'] as List<dynamic>?;
     final firstCandidate = candidates?.isNotEmpty == true
         ? candidates!.first as Map<String, dynamic>
