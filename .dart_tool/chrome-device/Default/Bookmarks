@@ -1,0 +1,58 @@
+{
+   "checksum": "eb57b4a7e4bc97a726616e15c1dbb267",
+   "roots": {
+      "bookmark_bar": {
+         "children": [  ],
+         "date_added": "13431981388591676",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Barra de favoritos",
+         "type": "folder"
+      },
+      "other": {
+         "children": [ {
+            "date_added": "13431981627818592",
+            "date_last_used": "0",
+            "guid": "6c598d0a-2980-40a1-a29e-999f6973df66",
+            "id": "5",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "Subtexto",
+            "type": "url",
+            "url": "http://localhost:51408/"
+         }, {
+            "date_added": "13431981659738469",
+            "date_last_used": "0",
+            "guid": "a12b9351-ba70-4f57-afbf-d69009894782",
+            "id": "6",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "Histórico",
+            "type": "url",
+            "url": "chrome://history/"
+         } ],
+         "date_added": "13431981388591676",
+         "date_last_used": "0",
+         "date_modified": "13431981659738469",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Outros favoritos",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13431981388591676",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Dispositivos móveis",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
