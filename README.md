@@ -21,23 +21,20 @@ Se `flutter` não estiver no PATH, use o caminho completo do SDK:
 No modo web, a chamada passa pela Netlify Function e a chave não fica no
 navegador. Em plataformas nativas, configure `--dart-define=GEMINI_API_KEY=SUA_CHAVE`.
 
-## Publicar no Netlify
+## Publicar na Vercel
 
 1. Envie as alterações para o GitHub:
 
 ```powershell
 git add .
-git commit -m "Protege chamada Gemini com Netlify Function"
+git commit -m "Migra hospedagem para Vercel"
 git push
 ```
 
-2. No Netlify, escolha **Add new site > Import an existing project**.
-3. Selecione o repositório do GitHub.
-4. Deixe o publish directory como `build/web`.
-5. Em **Site configuration > Environment variables**, crie `GEMINI_API_KEY`
-	com sua chave válida do Google AI Studio.
-6. Faça o deploy e abra o endereço gerado.
+2. Acesse https://vercel.com/new.
+3. Escolha **Import Git Repository** e selecione o repositório do GitHub.
+4. Em **Environment Variables**, crie `GEMINI_API_KEY` com sua chave válida.
+5. Clique em **Deploy**.
 
-O arquivo `netlify.toml` já configura o fallback das rotas e o diretório da
-Netlify Function. O upload manual de `build/web` não inclui Functions; use o
-deploy conectado ao GitHub.
+O arquivo `vercel.json` configura o diretório `build/web` e o fallback das
+rotas do Flutter Web. A função `api/analyze.mjs` usa a chave somente no servidor.

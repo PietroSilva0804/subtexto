@@ -83908,7 +83908,7 @@ a5C(a){var s=0,r=A.P(t.N),q,p,o,n,m
 var $async$vN=A.Q(function(b,c){if(b===1)return A.M(c,r)
 for(;;)switch(s){case 0:n=t.N
 s=3
-return A.R(A.aOs(A.fZ("/.netlify/functions/analyze"),B.bi.Gf(A.ai(["prompt",a],n,n),null),A.ai(["Content-Type","application/json"],n,n)),$async$vN)
+return A.R(A.aOs(A.fZ("/api/analyze"),B.bi.Gf(A.ai(["prompt",a],n,n),null),A.ai(["Content-Type","application/json"],n,n)),$async$vN)
 case 3:m=c
 n=m.b
 if(n!==200){if(n===400||n===401||n===403)throw A.i(A.cY("Chave Gemini inv\xe1lida ou sem acesso \xe0 API Generative Language."))
@@ -83917,7 +83917,7 @@ o=p.h(0,"text")
 if(typeof o=="string"&&o.length!==0){q=o
 s=1
 break}n=p.h(0,"error")
-throw A.i(A.cY(n==null?"A fun\xe7\xe3o do Netlify n\xe3o retornou texto.":n))
+throw A.i(A.cY(n==null?"A API da Vercel n\xe3o retornou texto.":n))
 case 1:return A.N(q,r)}})
 return A.O($async$vN,r)},
 Mp(a){var s,r,q,p,o,n,m=B.c.fC(a,"{")

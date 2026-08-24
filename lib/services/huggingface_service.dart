@@ -53,7 +53,7 @@ class HuggingFaceService {
 
   Future<String> _generateText(String prompt) async {
     final uri = kIsWeb
-        ? Uri.parse('/.netlify/functions/analyze')
+        ? Uri.parse('/api/analyze')
         : Uri.parse('$_baseUrl?key=$_apiKey');
     final body = kIsWeb
         ? jsonEncode({'prompt': prompt})
@@ -97,8 +97,7 @@ class HuggingFaceService {
     if (kIsWeb) {
       final text = data['text'];
       if (text is String && text.isNotEmpty) return text;
-      throw Exception(
-          data['error'] ?? 'A função do Netlify não retornou texto.');
+      throw Exception(data['error'] ?? 'A API da Vercel não retornou texto.');
     }
 
     final candidates = data['candidates'] as List<dynamic>?;
